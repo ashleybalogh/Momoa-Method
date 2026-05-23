@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momoa Method">
+<meta name="theme-color" content="#0A0A0A">
+<title>The Momoa Method</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --bg: #0A0A0A;
+    --bg2: #111;
+    --bg3: #1a1a1a;
+    --bg4: #141414;
+    --border: #222;
+    --border2: #2a2a2a;
+    --text: #F0EDE8;
+    --text2: #aaa;
+    --text3: #777;
+    --text4: #555;
+    --text5: #666;
+    --accent: #C8860A;
+    --safe-top: env(safe-area-inset-top);
+    --safe-bottom: env(safe-area-inset-bottom);
+  }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+  button:active { opacity: 0.8; }
+
+  /* HEADER */
+  #header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg2);
+    border-bottom: 3px solid var(--accent);
+    padding: 16px 20px 12px;
+    padding-top: calc(16px + var(--safe-top));
+  }
+  #header .eyebrow { font-size: 9px; letter-spacing: 4px; color: var(--text5); text-transform: uppercase; margin-bottom: 2px; }
+  #header h1 { font-size: 24px; font-weight: 900; letter-spacing: 2px; line-height: 1; }
+  #header .sub { font-size: 10px; color: var(--text5); margin-top: 3px; letter-spacing: 1px; }
+
+  /* VARIANT TABS */
+  #variant-tabs {
+    display: flex;
+    background: #0f0f0f;
+    border-bottom: 1px solid var(--border);
+  }
+  .variant-tab {
+    flex: 1;
+    padding: 10px 4px;
+    background: transparent;
+    color: var(--text4);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: background 0.15s, color 0.15s;
+    border-right: 1px solid var(--border);
+  }
+  .variant-tab:last-child { border-right: none; }
+  .variant-tab .tab-icon { font-size: 16px; display: block; margin-bottom: 2px; }
+  .variant-tab.active { color: #fff; }
+
+  /* PHILOSOPHY BANNER */
+  #philosophy {
+    background: var(--bg2);
+    border-left: 4px solid var(--accent);
+    padding: 10px 14px;
+    margin: 10px 14px 0;
+    border-radius: 4px;
+  }
+  #philosophy .label { font-size: 8px; color: var(--accent); letter-spacing: 2px; font-weight: 900; margin-bottom: 3px; }
+  #philosophy p { font-size: 11px; color: var(--text2); line-height: 1.6; font-family: 'Barlow', sans-serif; }
+
+  /* TOGGLE BUTTONS */
+  #toggles { display: flex; gap: 8px; padding: 10px 14px 4px; }
+  .toggle-btn {
+    background: #161616;
+    border: 1px solid var(--border2);
+    color: #bbb;
+    padding: 7px 12px;
+    border-radius: 4px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+  .toggle-btn.open { background: #222; border-color: #555; }
+
+  /* PANELS */
+  .panel {
+    margin: 6px 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 14px;
+    display: none;
+  }
+  .panel.visible { display: block; }
+  .panel-title { font-size: 13px; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; }
+
+  /* AR7 ROUNDS */
+  .ar7-rounds { display: flex; gap: 6px; margin-bottom: 12px; }
+  .ar7-round {
+    flex: 1;
+    background: var(--bg3);
+    border-radius: 4px;
+    padding: 8px 4px;
+    text-align: center;
+  }
+  .ar7-round .round-label { font-size: 8px; color: var(--text5); letter-spacing: 2px; margin-bottom: 2px; }
+  .ar7-round .round-num { font-size: 22px; font-weight: 900; }
+  .ar7-round .round-rest { font-size: 8px; color: var(--text5); margin-top: 2px; }
+  .ar7-round .round-int { font-size: 8px; color: var(--text4); margin-top: 1px; }
+  .info-block { background: var(--bg3); border-radius: 4px; padding: 10px; margin-bottom: 8px; }
+  .info-block .info-label { font-size: 9px; font-weight: 900; letter-spacing: 1px; margin-bottom: 3px; }
+  .info-block p { font-size: 11px; color: #bbb; line-height: 1.6; font-family: 'Barlow', sans-serif; }
+
+  /* PULLUP STAGES */
+  #pullup-panel { border-color: #3a2a5e; }
+  .stage-tabs { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
+  .stage-tab {
+    background: var(--bg3);
+    border: 1px solid #333;
+    color: var(--text5);
+    padding: 5px 9px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .stage-tab.active { color: #fff; }
+  .stage-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .stage-bar { width: 4px; height: 36px; border-radius: 2px; flex-shrink: 0; }
+  .stage-name { font-size: 15px; font-weight: 900; }
+  .stage-desc { font-size: 10px; color: #888; }
+  .protocol-item { background: var(--bg3); border-radius: 4px; padding: 10px; margin-bottom: 6px; }
+  .protocol-name { font-size: 12px; font-weight: 900; color: #ddd; margin-bottom: 3px; }
+  .protocol-detail { font-size: 11px; color: #888; line-height: 1.5; font-family: 'Barlow', sans-serif; }
+  .ar7-note { background: #16131d; border: 1px solid #3a2a5e; border-radius: 4px; padding: 10px; margin-bottom: 6px; }
+  .ar7-note .note-label { font-size: 8px; color: #5C3A7E; font-weight: 900; letter-spacing: 1px; margin-bottom: 3px; }
+  .ar7-note p { font-size: 11px; color: var(--text2); line-height: 1.5; font-family: 'Barlow', sans-serif; }
+  .transfer-note { background: #131a13; border: 1px solid #2a3a2a; border-radius: 4px; padding: 10px; }
+  .transfer-note .note-label { font-size: 8px; color: #27AE60; font-weight: 900; letter-spacing: 1px; margin-bottom: 3px; }
+  .transfer-note p { font-size: 11px; color: var(--text2); line-height: 1.5; font-family: 'Barlow', sans-serif; }
+
+  /* DAY SELECTOR */
+  #day-selector { display: flex; gap: 5px; padding: 10px 14px 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  #day-selector::-webkit-scrollbar { display: none; }
+  .day-tab {
+    flex-shrink: 0;
+    background: #161616;
+    border: 1px solid var(--border2);
+    color: var(--text5);
+    padding: 9px 12px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .day-tab.active { color: #fff; }
+  .day-tab .day-num { font-size: 7px; opacity: 0.7; display: block; margin-bottom: 1px; }
+  .rest-tab {
+    flex-shrink: 0;
+    background: #0d0d0d;
+    border: 1px solid #1a1a1a;
+    color: #333;
+    padding: 9px 12px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  /* DAY CARD */
+  #day-card { margin: 0 14px; }
+  #day-header { border-radius: 6px 6px 0 0; padding: 12px 16px; }
+  #day-header .day-label { font-size: 9px; letter-spacing: 3px; opacity: 0.8; margin-bottom: 2px; }
+  #day-header .day-focus { font-size: 22px; font-weight: 900; letter-spacing: 2px; }
+  #day-header .day-muscles { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+  #day-load { background: var(--bg3); padding: 9px 16px; }
+  #day-load .load-label { font-size: 8px; letter-spacing: 2px; font-weight: 900; margin-bottom: 2px; }
+  #day-load p { font-size: 11px; color: #ccc; line-height: 1.6; font-family: 'Barlow', sans-serif; }
+  #day-note { background: var(--bg4); padding: 9px 16px; border-left: 4px solid #333; }
+  #day-note .note-label { font-size: 8px; color: var(--text5); letter-spacing: 2px; font-weight: 900; margin-bottom: 2px; }
+  #day-note p { font-size: 11px; color: #999; line-height: 1.6; font-style: italic; font-family: 'Barlow', sans-serif; }
+  #exercises { background: var(--bg2); border-radius: 0 0 6px 6px; overflow: hidden; }
+  .exercise-item { padding: 12px 16px; border-bottom: 1px solid #1a1a1a; }
+  .exercise-item:last-child { border-bottom: none; }
+  .exercise-item.special { background: #131118; }
+  .phase-badge {
+    display: inline-block;
+    font-size: 7px;
+    letter-spacing: 2px;
+    font-weight: 900;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-bottom: 5px;
+  }
+  .exercise-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3px; }
+  .exercise-name { font-size: 13px; font-weight: 900; letter-spacing: 0.5px; flex: 1; margin-right: 10px; }
+  .exercise-sets { text-align: right; flex-shrink: 0; }
+  .exercise-sets .sets-num { font-size: 11px; font-weight: 900; }
+  .exercise-sets .reps-num { font-size: 8px; color: var(--text4); margin-top: 1px; }
+  .exercise-weight { font-size: 9px; color: var(--text5); margin-bottom: 3px; font-weight: 700; }
+  .exercise-cue { font-size: 11px; color: var(--text3); line-height: 1.5; font-style: italic; font-family: 'Barlow', sans-serif; }
+
+  /* WEEKLY GRID */
+  #weekly { margin: 12px 14px 0; background: var(--bg2); border: 1px solid #1e1e1e; border-radius: 6px; padding: 12px; }
+  #weekly .weekly-label { font-size: 9px; color: var(--text4); letter-spacing: 2px; font-weight: 900; margin-bottom: 8px; }
+  .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+  .week-day { background: var(--bg3); border-radius: 3px; padding: 7px 2px; text-align: center; }
+  .week-day.rest { background: #0d0d0d; }
+  .week-day .wd { font-size: 9px; font-weight: 900; }
+  .week-day .wf { font-size: 7px; margin-top: 1px; color: var(--text5); }
+  .week-day.rest .wd { color: #2a2a2a; }
+  .week-day.rest .wf { color: #222; }
+  #weekly .week-note { font-size: 10px; color: var(--text4); margin-top: 8px; line-height: 1.6; font-family: 'Barlow', sans-serif; }
+
+  /* BOTTOM SAFE AREA */
+  #bottom-pad { height: calc(20px + var(--safe-bottom)); }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="eyebrow">Functional Physique Program</div>
+  <h1>THE MOMOA METHOD</h1>
+  <div class="sub">AR-7 · Two-Phase Loading · Travel-Ready</div>
+</div>
+
+<div id="variant-tabs"></div>
+<div id="philosophy"><div class="label"></div><p></p></div>
+<div id="toggles">
+  <button class="toggle-btn" id="ar7-toggle">▼ AR-7 System</button>
+  <button class="toggle-btn" id="pullup-toggle">▼ Pull-Up Progression</button>
+</div>
+
+<div class="panel" id="ar7-panel">
+  <div class="panel-title" id="ar7-title">AR-7: HOW IT WORKS</div>
+  <div class="ar7-rounds">
+    <div class="ar7-round"><div class="round-label">ROUND 1</div><div class="round-num" id="r1">7×7</div><div class="round-rest">7 sec rest</div><div class="round-int">~60% effort</div></div>
+    <div class="ar7-round"><div class="round-label">ROUND 2</div><div class="round-num" id="r2">6×6</div><div class="round-rest">6 sec rest</div><div class="round-int">~75% effort</div></div>
+    <div class="ar7-round"><div class="round-label">ROUND 3</div><div class="round-num" id="r3">5×5</div><div class="round-rest">5 sec rest</div><div class="round-int">~85% effort</div></div>
+  </div>
+  <div class="info-block"><div class="info-label" id="ar7-weight-label">WEIGHT</div><p>50–65% 1RM. The burn comes from 7-second rest periods, not the load. Fatigue is the mechanism — not weight.</p></div>
+  <div class="info-block"><div class="info-label" id="ar7-rest-label">REST BETWEEN ROUNDS</div><p>1–2 minutes. Full rounds. Not full rest.</p></div>
+</div>
+
+<div class="panel" id="pullup-panel">
+  <div class="panel-title">PULL-UP PROGRESSION</div>
+  <p style="font-size:11px;color:#666;margin-bottom:12px;line-height:1.5;font-family:'Barlow',sans-serif;">Your DB and cable days build pull-up strength directly. Every heavy row, every pullover, every face pull. The bar day expresses what the other days are building.</p>
+  <div class="stage-tabs" id="stage-tabs"></div>
+  <div id="stage-detail"></div>
+</div>
+
+<div id="day-selector"></div>
+
+<div id="day-card">
+  <div id="day-header">
+    <div class="day-label" id="day-label"></div>
+    <div class="day-focus" id="day-focus"></div>
+    <div class="day-muscles" id="day-muscles"></div>
+  </div>
+  <div id="day-load">
+    <div class="load-label" id="load-label">LOAD PRESCRIPTION</div>
+    <p id="load-text"></p>
+  </div>
+  <div id="day-note">
+    <div class="note-label">COACH NOTE</div>
+    <p id="note-text"></p>
+  </div>
+  <div id="exercises"></div>
+</div>
+
+<div id="weekly">
+  <div class="weekly-label">WEEKLY STRUCTURE</div>
+  <div class="week-grid" id="week-grid"></div>
+  <div class="week-note">Days 6–7 are mandatory. Recovery is training. Pull-up strength is built during rest, not during sets.</div>
+</div>
+
+<div id="bottom-pad"></div>
+
+<script>
+const PULLUP_STAGES = [
+  { stage:1, label:"Stage 1", range:"0–2 reps", color:"#888", description:"Building the pattern",
+    protocol:[
+      { name:"Negative Pull-Up (eccentric only)", detail:"Jump or step to top position. Lower yourself as slowly as possible — 6 to 10 seconds. Full dead hang at bottom. This is the fastest way to build pull-up strength. Do 5–8 negatives." },
+      { name:"Band-Assisted Pull-Up", detail:"Heaviest band available. Full ROM — dead hang to chin over bar. 3 sets of 5–8. Focus on squeezing lats, not just pulling with arms." },
+      { name:"Dead Hang", detail:"Hang from bar for 30–60 seconds per set. Builds grip, shoulder stability, and decompresses spine. Do 3 sets between other movements." }
+    ],
+    ar7note:"Do NOT attempt AR-7 pull-ups yet. All AR-7 volume comes from DB single-arm rows immediately after each negative set. Your rows ARE your pull-up training right now.",
+    transfer:"DB and cable days are building your pull-up directly. Every heavy row, every pullover, every face pull. Trust the volume."
+  },
+  { stage:2, label:"Stage 2", range:"3–5 reps", color:"#C8860A", description:"First real reps",
+    protocol:[
+      { name:"Pull-Up to Failure + Row Finish", detail:"Do all your pull-ups at the start of each AR-7 set. The moment you can't do another, immediately grab a DB and finish remaining reps as single-arm rows. Example: get 4 pull-ups, need 7 — do 3 rows to complete the set." },
+      { name:"Negative Finisher", detail:"After all AR-7 sets, do 3–5 negatives at slow tempo. These are your strength builder. They come after volume, not before." },
+      { name:"Band-Assisted for Volume", detail:"On second and third rounds of AR-7 when fatigue is high, band is acceptable. Unassisted always first." }
+    ],
+    ar7note:"Run AR-7 as hybrid sets: pull-ups first, rows to complete. Track your total unassisted pull-up reps each session. This number will climb fast.",
+    transfer:"You should start noticing your rows getting heavier and your negatives getting slower — both are signs pull-up strength is coming."
+  },
+  { stage:3, label:"Stage 3", range:"5–7 reps", color:"#1A6B8A", description:"AR-7 entry point",
+    protocol:[
+      { name:"Full AR-7 Round 1 — Pull-Ups", detail:"7 sets × 7 reps, 7 sec rest. If you fail mid-set, rest 2 extra seconds and grind the remaining reps. Grip variation: wide overhand round 1." },
+      { name:"AR-7 Round 2 — Mixed", detail:"6×6, 6 sec rest. Neutral grip if available. Fail gracefully — do what you can, rows to complete." },
+      { name:"AR-7 Round 3 — Chin-Up", detail:"5×5, 5 sec rest. Underhand/supinated. This is a bicep-dominant variation. Easier than overhand — use it to complete the round clean." }
+    ],
+    ar7note:"Vary your grip each round — this is the Momoa signature. Wide → neutral → underhand. Different fibers, different stimulus.",
+    transfer:"At this stage your DB and cable days should have you rowing 45–55lbs comfortably. If not, increase DB day weight."
+  },
+  { stage:4, label:"Stage 4", range:"7+ clean", color:"#5C3A7E", description:"Full program",
+    protocol:[
+      { name:"Heavy Weighted Pull-Up Opener", detail:"2–3 sets of 3–5 reps with added load. Use a belt, hold a DB between feet, or wear a loaded backpack. This is your Phase 1 heavy stimulus BEFORE AR-7." },
+      { name:"Full AR-7 — All Pull-Up Variations", detail:"Round 1: wide overhand 7×7. Round 2: neutral/hammer 6×6. Round 3: underhand chin-up 5×5. All rounds unassisted. Grip varies every round." },
+      { name:"Mixed Grip Sets", detail:"One hand over, one under. Hits lats and biceps differently. Add these as bonus sets if energy allows." }
+    ],
+    ar7note:"This is the full Momoa protocol. Heavy opener activates fast-twitch first via mechanical tension. AR-7 then hits those already-recruited fibers with metabolic volume. Two-phase system complete.",
+    transfer:"You are now building toward 88lbs on a pull-up. It takes time. Progression is adding 5–10lbs to weighted sets monthly."
+  },
+  { stage:5, label:"Stage 5", range:"Weighted", color:"#C0392B", description:"Momoa territory",
+    protocol:[
+      { name:"Weighted Pull-Up — Heavy Opener", detail:"Work up to 25–88lbs. 3 sets of 3–5 reps. Treat this like a strength session opener. Belt is ideal." },
+      { name:"Bodyweight AR-7 — Full Grip Rotation", detail:"After weighted sets, strip the weight and run full AR-7. Wide → neutral → underhand → mixed. Your bodyweight now feels light after loaded sets. Use it." },
+      { name:"Hanging Core Finisher", detail:"Hanging knee raises, L-sit tucks, windshield wipers. Grip and core simultaneously. Momoa physique in one movement." }
+    ],
+    ar7note:"You are doing what Momoa does. The physique follows from the work, not the other way around.",
+    transfer:"Maintain DB and cable days. They keep volume high and joints healthy. The bar days are your peak expression — the other days are what make bar days possible."
+  }
+];
+
+const PHASE_COLORS = {
+  "PHASE 1 · HEAVY":"#C0392B","PHASE 1 · PRIMARY":"#5C3A7E",
+  "PHASE 2 · AR-7":null,"PHASE 2 · HEAVY COMPOUND":"#C0392B",
+  "PHASE 2 · AR-7 · SIGNATURE":"#9B59B6","PRIMARY MOVE":null,"BAR BONUS":"#27AE60"
+};
+
+const PROGRAMS = {
+  dumbbell:{
+    label:"Dumbbell Only", icon:"🏨", subtitle:"Hotel room · Fixed increment DBs · No bar", color:"#C8860A",
+    weightPhilosophy:"Two-phase loading on pull days: heavy opener (50lb+ rows, 4–6 reps) THEN drop to 60–65% 1RM for AR-7. Push/shoulder days stay 60–65% throughout. Legs: 65% on goblet squat and RDL, bodyweight on explosive work.",
+    days:[
+      { day:1, focus:"PUSH", muscles:"Chest · Shoulders · Triceps",
+        weight:"60–65% 1RM throughout. No heavy opener on push days — shoulder joint doesn't benefit from max loading the way back does.",
+        note:"Change grip every set — wide, neutral, close. This is the Momoa signature. Vary hand position on every push-up variation.",
+        exercises:[
+          { name:"DB Floor Press", phase:null, sets:"AR-7", reps:"7→6→5", weight:"60–65% 1RM", cue:"Neutral or pronated grip. Full ROM. Elbows 45°, not flared. Pause 1s at bottom." },
+          { name:"DB Arnold Press", phase:null, sets:"AR-7", reps:"7→6→5", weight:"60% 1RM", cue:"Rotate through full range. Shoulder health over load. Seated or standing." },
+          { name:"Wide Push-Up", phase:null, sets:"AR-7", reps:"7→6→5", weight:"Bodyweight", cue:"Pause 1s at bottom. Tempo over speed. Chest to floor." },
+          { name:"Close-Grip Push-Up", phase:null, sets:"AR-7", reps:"7→6→5", weight:"Bodyweight", cue:"Elbows track back. Diamond or index-finger touching." },
+          { name:"DB Lateral Raise", phase:null, sets:"3×15", reps:"Light", weight:"~30% 1RM", cue:"Little finger up. Slight forward lean. Control eccentric." }
+        ]
+      },
+      { day:2, focus:"PULL", muscles:"Lats · Rhomboids · Biceps · Rear Delts",
+        weight:"TWO-PHASE DAY. Heavy opener at max DB available (50lb+), 4–6 reps, 2–3 sets. Drop to 60–65% for AR-7. This is the closest you get to the Momoa two-phase system on a DB-only day.",
+        note:"The bear crawl row is your heavy opener. Get on the floor. One hand on DB, one on floor. Row with full lat engagement — elbow drives to ceiling. Go as heavy as you can with good form.",
+        exercises:[
+          { name:"⭐ Bear Crawl DB Row — Heavy Opener", phase:"PHASE 1 · HEAVY", sets:"3×4–6 each arm", reps:"Heavy", weight:"Heaviest DB available. 50lb+ target.", cue:"On all fours, one DB. Row elbow to ceiling. Full range. Hips stay square. This is Momoa's actual movement — he did these at 50lb+. Don't go light here." },
+          { name:"DB Single-Arm Row", phase:"PHASE 2 · AR-7", sets:"AR-7", reps:"7→6→5 each arm", weight:"60–65% 1RM", cue:"Knee on bed/chair. Drive elbow past torso. Squeeze shoulder blade at top." },
+          { name:"DB Bent-Over Row (bilateral)", phase:"PHASE 2 · AR-7", sets:"AR-7", reps:"7→6→5", weight:"60–65% 1RM", cue:"Hinge 45°. Both arms. Squeeze blades. Don't jerk or use momentum." },
+          { name:"DB Pullover", phase:"PHASE 2 · AR-7", sets:"AR-7", reps:"7→6→5", weight:"Moderate", cue:"Lying on bed or floor. Straight arms. Full lat stretch overhead. Closest DB sub to the cable pull-down move." },
+          { name:"Rear Delt Fly", phase:null, sets:"3×15", reps:"Light", weight:"~25% 1RM", cue:"Bent over. Thumbs down. Slow eccentric. Rotator cuff health." }
+        ]
+      },
+      { day:3, focus:"LEGS + EXPLOSIVE", muscles:"Quads · Hamstrings · Glutes · Power",
+        weight:"65% 1RM on goblet squat and RDL. Bodyweight only on split squats and all explosive work. Never load the jumps.",
+        note:"Momoa does 50–100 air squats to warm up. Start at 50. This is non-negotiable — it's his actual protocol and it works.",
+        exercises:[
+          { name:"Air Squat — Warm-Up", phase:null, sets:"50 reps continuous", reps:"continuous", weight:"Bodyweight", cue:"Below parallel. Heels down. Get blood moving. Work toward 100 over weeks." },
+          { name:"DB Goblet Squat", phase:null, sets:"AR-7", reps:"7→6→5", weight:"65% 1RM", cue:"One heavy DB at chest. Elbows inside knees at bottom. Full depth." },
+          { name:"DB Romanian Deadlift", phase:null, sets:"AR-7", reps:"7→6→5", weight:"65% 1RM", cue:"Hinge, don't squat. Feel the hamstring stretch. Back straight throughout." },
+          { name:"DB Bulgarian Split Squat", phase:null, sets:"AR-7", reps:"7→6→5 each leg", weight:"Bodyweight or light DB", cue:"Rear foot on bed or chair. Front shin vertical. Full depth." },
+          { name:"Jump Squat", phase:null, sets:"3×10", reps:"Explosive", weight:"Bodyweight only", cue:"Land soft. Full squat depth each rep. Functional power. Always in this program." }
+        ]
+      },
+      { day:4, focus:"CORE + FUNCTIONAL", muscles:"Full body · Anti-rotation · Conditioning",
+        weight:"Light DB for renegade rows. Everything else bodyweight. This is density and conditioning — not load.",
+        note:"Burpees are a Momoa staple. This is the 'lighter Thursday' — still brutal. The bear crawl here is conditioning, not strength.",
+        exercises:[
+          { name:"V-Sit Hold", phase:null, sets:"5×30s", reps:"Hold", weight:"Bodyweight", cue:"Legs straight if possible. Back straight, not rounded. Build to 45s over weeks." },
+          { name:"Bear Crawl", phase:null, sets:"5 lengths of room", reps:"Forward + back", weight:"Bodyweight", cue:"Hips level. Slow. This is conditioning — not the loaded strength version from Day 2." },
+          { name:"Burpee", phase:null, sets:"5×10", reps:"Explosive", weight:"Bodyweight", cue:"Chest to floor. Explosive jump at top. Full extension. Momoa staple." },
+          { name:"DB Renegade Row", phase:null, sets:"3×8 each side", reps:"Moderate", weight:"40–50% 1RM", cue:"Plank position. Anti-rotation is the entire point. Hips locked square." },
+          { name:"Plank Walkout", phase:null, sets:"3×10", reps:"Slow", weight:"Bodyweight", cue:"Walk hands out to full extension. Feel core load. Slow and deliberate." }
+        ]
+      },
+      { day:5, focus:"SHOULDERS + ARMS", muscles:"Delts · Bis · Tris · Grip",
+        weight:"55–60% 1RM. Pump and isolation day. Constant tension over load. If it doesn't burn, you're going too heavy.",
+        note:"This is aesthetic and maintenance. Feel the muscle working. No ego lifting today — save that for Day 2.",
+        exercises:[
+          { name:"DB Overhead Press", phase:null, sets:"AR-7", reps:"7→6→5", weight:"55–60% 1RM", cue:"Seated or standing. Full lockout overhead. Control the eccentric." },
+          { name:"DB Lateral Raise", phase:null, sets:"AR-7", reps:"7→6→5", weight:"Light — ~30% 1RM", cue:"Control eccentric. Lighter than you want. Little finger up." },
+          { name:"DB Incline Curl", phase:null, sets:"AR-7", reps:"7→6→5", weight:"55% 1RM", cue:"Full stretch at bottom. Slow. Lying back on inclined surface." },
+          { name:"DB Overhead Tricep Extension", phase:null, sets:"AR-7", reps:"7→6→5", weight:"55% 1RM", cue:"Elbows in. Full extension at top. Control the drop." },
+          { name:"DB Zottman Curl", phase:null, sets:"3×12", reps:"Light", weight:"Light", cue:"Curl supinated, lower pronated. Forearm and brachialis builder." }
+        ]
+      }
+    ]
+  },
+  cable:{
+    label:"Cable Machine", icon:"⚡", subtitle:"Hotel or commercial gym with cable setup", color:"#1A6B8A",
+    weightPhilosophy:"Cable provides constant tension DBs can't match. Pull days: heavy bear crawl DB row opener, then AR-7 at 60–65%. Push days: 60–65% throughout. Cable beats DB for isolation — the tension never goes slack.",
+    days:[
+      { day:1, focus:"PUSH", muscles:"Chest · Shoulders · Triceps",
+        weight:"60–65% 1RM. Cable chest fly maintains tension at full stretch where DBs go slack — this is where cable wins on push day.",
+        note:"Cable constant tension through full ROM is the advantage here. Don't waste it by going heavy — use moderate weight and actually feel the muscle.",
+        exercises:[
+          { name:"Cable Chest Fly (mid pulley)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"60–65% 1RM", cue:"Slight forward lean. Full stretch at open. Squeeze hard at center. Cable maintains tension where DBs go slack." },
+          { name:"Cable Overhead Press (low pulley)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"60% 1RM", cue:"Face away from machine. Press up and slightly forward. Unilateral option: one arm at a time." },
+          { name:"Cable Tricep Pushdown (rope)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"60% 1RM", cue:"Elbows pinned to sides. Flare rope at bottom. Full extension every rep." },
+          { name:"Push-Up (wide then close grip)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"Bodyweight", cue:"Alternate grip each round. Bodyweight finisher after cable work." },
+          { name:"Cable Lateral Raise (single arm, low pulley)", phase:null, sets:"3×15 each side", reps:"Light", weight:"~30% 1RM", cue:"Arm crosses body at start. Better tension at bottom of ROM than DBs." }
+        ]
+      },
+      { day:2, focus:"PULL — Momoa Cable Day", muscles:"Lats · Mid Back · Biceps · Serratus",
+        weight:"TWO-PHASE DAY. Phase 1: heavy bear crawl DB row — max load, 4–6 reps. Phase 2: AR-7 at 60–65%. The seated V-sit pull stays moderate — it's a finesse move, not a power move.",
+        note:"THE MOVE: Seated V-sit single-arm cable pull. Sit on floor facing high pulley, legs in a V. Single arm, pull from high down and across your body, rotating torso. This is the one you saw Momoa do.",
+        exercises:[
+          { name:"⭐ Bear Crawl DB Row — Heavy Opener", phase:"PHASE 1 · HEAVY", sets:"3×4–6 each arm", reps:"Heavy", weight:"Heaviest DB available. 50lb+ target.", cue:"On all fours. One DB. Elbow drives to ceiling. Full ROM. Hips square. This opener doesn't change." },
+          { name:"⭐ Seated V-Sit Single-Arm Cable Pull (high pulley)", phase:"PHASE 2 · AR-7 · SIGNATURE", sets:"AR-7", reps:"7→6→5 each arm", weight:"Moderate — 50–60% 1RM", cue:"Sit on floor facing machine. Legs in wide V. Pull from high pulley down to hip, rotate torso. Feel the lat and serratus. Finesse over force." },
+          { name:"Cable Straight-Arm Pulldown (standing)", phase:"PHASE 2 · AR-7", sets:"AR-7", reps:"7→6→5", weight:"60–65% 1RM", cue:"Arms straight. Hinge forward slightly. Drive bar to thighs. Pure lat isolation." },
+          { name:"Cable Single-Arm Row (mid pulley)", phase:"PHASE 2 · AR-7", sets:"AR-7", reps:"7→6→5 each arm", weight:"60–65% 1RM", cue:"Full retraction at peak. Elbow past torso. Standing or seated." },
+          { name:"Cable Face Pull (rope, high pulley)", phase:null, sets:"3×15", reps:"Light", weight:"Light", cue:"Pull to forehead. External rotate at end. Rotator cuff health — non-negotiable." }
+        ]
+      },
+      { day:3, focus:"LEGS + EXPLOSIVE", muscles:"Quads · Hamstrings · Glutes · Power",
+        weight:"Cable: 60% for pull-through. DB goblet squat at 65% 1RM. Explosive moves bodyweight only.",
+        note:"Cable pull-through is an elite posterior chain move most people skip. The angle loads glutes and hamstrings differently than any DB exercise.",
+        exercises:[
+          { name:"Air Squat — Warm-Up", phase:null, sets:"50 reps continuous", reps:"continuous", weight:"Bodyweight", cue:"Momoa protocol. Non-negotiable. Work toward 100." },
+          { name:"Cable Pull-Through (low pulley, between legs)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"60% 1RM", cue:"Hip hinge, not squat. Drive hips forward at top. Squeeze glutes. Hamstring dominant." },
+          { name:"DB Goblet Squat", phase:null, sets:"AR-7", reps:"7→6→5", weight:"65% 1RM", cue:"Heavy DB at chest. Elbows inside knees at bottom. Full depth." },
+          { name:"Cable Romanian Deadlift (low pulley)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"60–65% 1RM", cue:"Stand back from machine. Hinge into the cable tension. Hamstring stretch." },
+          { name:"Jump Squat", phase:null, sets:"3×10", reps:"Explosive", weight:"Bodyweight only", cue:"Land soft. Full depth. Power. Always in this program." }
+        ]
+      },
+      { day:4, focus:"CORE + FUNCTIONAL", muscles:"Full body · Anti-rotation · Conditioning",
+        weight:"Light cable for core work. Bodyweight everything else. Movement quality and conditioning.",
+        note:"Cable woodchop and Pallof press are elite anti-rotation tools. This is what functional training actually means — controlling rotation under load.",
+        exercises:[
+          { name:"Cable Woodchop (high to low, each side)", phase:null, sets:"3×12 each side", reps:"Light-moderate", weight:"40–50% 1RM", cue:"Rotate from thoracic spine, not just arms. Control the return." },
+          { name:"Pallof Press (mid pulley)", phase:null, sets:"3×10 each side", reps:"Moderate", weight:"Moderate", cue:"Stand perpendicular to cable. Press straight out. Hold 2s. Fight the rotation. Elite anti-rotation core." },
+          { name:"Burpee", phase:null, sets:"5×10", reps:"Explosive", weight:"Bodyweight", cue:"Always on this day. Momoa staple." },
+          { name:"Cable Crunch (high pulley, kneeling)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"Moderate", cue:"Elbows to knees. Don't pull with arms — crunch with abs. Rope attachment." },
+          { name:"Bear Crawl", phase:null, sets:"4 lengths of room", reps:"Conditioning", weight:"Bodyweight", cue:"Hips level. Slow and controlled. Conditioning version — not loaded." }
+        ]
+      },
+      { day:5, focus:"SHOULDERS + ARMS", muscles:"Delts · Bis · Tris",
+        weight:"55–60%. Cable maintains tension at every point in the ROM — a DB goes slack at top and bottom. Use this.",
+        note:"Cable pump day. Constant tension is everything here. Go lighter than you think and feel every inch of the movement.",
+        exercises:[
+          { name:"Cable Upright Row (low pulley)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"55–60% 1RM", cue:"Wide grip. Elbows up and out. Stop at chin." },
+          { name:"Cable Lateral Raise (single arm, each side)", phase:null, sets:"AR-7", reps:"7→6→5 each", weight:"Light", cue:"Tension at bottom of ROM — this is where cable beats DBs for laterals." },
+          { name:"Cable Curl (low pulley, supinating)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"55–60% 1RM", cue:"Step back for tension at full extension. Slow eccentric. Feel the stretch." },
+          { name:"Cable Overhead Tricep Extension (rope, low pulley)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"55–60% 1RM", cue:"Face away from machine. Rope overhead. Elbows forward. Full extension." },
+          { name:"Cable Hammer Curl (rope, low pulley)", phase:null, sets:"3×12", reps:"Light", weight:"Light", cue:"Neutral grip throughout. Brachialis and forearm builder." }
+        ]
+      }
+    ]
+  },
+  pullup:{
+    label:"Pull-Up Bar", icon:"💪", subtitle:"Full gym · The complete two-phase Momoa system", color:"#5C3A7E",
+    weightPhilosophy:"The only variant where the primary movement gets the heavy Phase 1 treatment. Weighted pull-ups first — even if that means just 1 or 2 reps plus negatives. Then AR-7 volume. DB rows as Phase 2 compound. This is the full system.",
+    days:[
+      { day:1, focus:"PUSH", muscles:"Chest · Shoulders · Triceps",
+        weight:"65% 1RM on DB press. Chest dips are bodyweight — add weight when all rounds are clean.",
+        note:"Dips are Momoa's #1 push move. Chest dips — lean forward, elbows wide, go deep. Not tricep dips off a chair. These are the real thing.",
+        exercises:[
+          { name:"Chest Dip (elbows wide, lean forward)", phase:"PRIMARY MOVE", sets:"AR-7", reps:"7→6→5", weight:"Bodyweight → add weight when clean", cue:"Lean forward for chest emphasis. Deep range. Add a belt with plates when all AR-7 rounds are clean." },
+          { name:"DB Incline Press", phase:null, sets:"AR-7", reps:"7→6→5", weight:"65% 1RM", cue:"Slow eccentric 3s down. Full stretch at bottom. Neutral grip option." },
+          { name:"Wide Push-Up", phase:null, sets:"AR-7", reps:"7→6→5", weight:"Bodyweight", cue:"Pause at bottom. Full range. Vary grip each round." },
+          { name:"DB Lateral Raise", phase:null, sets:"3×15", reps:"Light", weight:"~30% 1RM", cue:"Capped shoulders. Always here. Little finger up." },
+          { name:"Tricep Dip (upright torso)", phase:null, sets:"3×15", reps:"Bodyweight", weight:"Bodyweight", cue:"Upright for tricep focus vs. leaning forward for chest. Different stimulus." }
+        ]
+      },
+      { day:2, focus:"PULL — Full Two-Phase Protocol", muscles:"Lats · Rhomboids · Biceps · Rear Delts",
+        weight:"PHASE 1: Pull-up or progression — max effort. PHASE 2: AR-7 bodyweight pull-ups, then DB rows at 65%+. This is the complete system.",
+        note:"In 2016 Momoa did pull-ups with 88lbs around his waist. You're at Stage 1 right now — 1–2 reps. That's fine. See the Pull-Up Progression panel. The program is designed to get you there.",
+        exercises:[
+          { name:"⭐ Pull-Up / Progression (see stage panel)", phase:"PHASE 1 · PRIMARY", sets:"See your current stage", reps:"See stage", weight:"See stage prescription", cue:"This is the anchor movement of the entire program. Follow your current stage protocol exactly. Do not skip negatives even when you can do real reps." },
+          { name:"⭐ Bear Crawl DB Row — Heavy", phase:"PHASE 2 · HEAVY COMPOUND", sets:"3×4–6 each arm", reps:"Heavy", weight:"Heaviest DB available. 50lb+ target.", cue:"After pull-up work. On all fours. One DB. Elbow drives to ceiling. Full ROM. Don't drop the weight here." },
+          { name:"DB Single-Arm Row", phase:"PHASE 2 · AR-7", sets:"AR-7", reps:"7→6→5 each arm", weight:"60–65% 1RM", cue:"Knee supported. Drive elbow past torso. Squeeze blade at top." },
+          { name:"DB Pullover", phase:"PHASE 2 · AR-7", sets:"AR-7", reps:"7→6→5", weight:"Moderate", cue:"Straight arms. Full lat stretch overhead. Serratus activation." },
+          { name:"Face Pull (band or cable if available)", phase:null, sets:"3×15", reps:"Light", weight:"Light", cue:"External rotation at end. Rotator cuff health. Non-negotiable for pull-up longevity." }
+        ]
+      },
+      { day:3, focus:"LEGS + EXPLOSIVE", muscles:"Quads · Hamstrings · Glutes · Power",
+        weight:"65% on DB work. Bodyweight only on explosive moves. Same structure across all variants — legs don't change.",
+        note:"Having a bar doesn't change leg day. Air squats first, always. The jump squats build explosive power that pull-ups also demand from your lats.",
+        exercises:[
+          { name:"Air Squat — Warm-Up", phase:null, sets:"50–100 reps", reps:"continuous", weight:"Bodyweight", cue:"Work toward 100. Below parallel always. This is Momoa's actual protocol." },
+          { name:"DB Goblet Squat", phase:null, sets:"AR-7", reps:"7→6→5", weight:"65% 1RM", cue:"Heavy DB at chest. Elbows inside knees at bottom." },
+          { name:"DB Romanian Deadlift", phase:null, sets:"AR-7", reps:"7→6→5", weight:"65% 1RM", cue:"Hinge. Hamstring stretch. Back straight." },
+          { name:"DB Bulgarian Split Squat", phase:null, sets:"AR-7", reps:"7→6→5 each leg", weight:"Bodyweight or light DB", cue:"Rear foot elevated. Front shin vertical. Full depth." },
+          { name:"Jump Squat", phase:null, sets:"3×10", reps:"Explosive", weight:"Bodyweight only", cue:"Power. Soft landing. Always." }
+        ]
+      },
+      { day:4, focus:"CORE + FUNCTIONAL", muscles:"Full body · Grip · Conditioning",
+        weight:"Bodyweight. The bar adds elite hanging core options that no other variant has.",
+        note:"Hanging core work is some of the best grip and core training available. Dead hangs also directly decompress the spine after heavy pulling — do them.",
+        exercises:[
+          { name:"Dead Hang", phase:"BAR BONUS", sets:"3×30–60s", reps:"Hold", weight:"Bodyweight", cue:"Full grip. Shoulder packed — don't hang passively. Grip and shoulder stability. Directly transfers to pull-up strength." },
+          { name:"Hanging Knee Raise", phase:"BAR BONUS", sets:"5×10–15", reps:"Controlled", weight:"Bodyweight", cue:"Dead hang start. Pull knees to chest. Control the descent. No swing." },
+          { name:"Hanging Windshield Wiper (work toward)", phase:"BAR BONUS", sets:"3×6–8 each side", reps:"Controlled", weight:"Bodyweight", cue:"Straight legs, rotate side to side. Elite core. Start with bent knees." },
+          { name:"Burpee", phase:null, sets:"5×10", reps:"Explosive", weight:"Bodyweight", cue:"Momoa staple. Always here." },
+          { name:"Bear Crawl", phase:null, sets:"4 lengths", reps:"Conditioning", weight:"Bodyweight", cue:"Slow. Hips level. Conditioning version." }
+        ]
+      },
+      { day:5, focus:"SHOULDERS + ARMS", muscles:"Delts · Bis · Tris",
+        weight:"55–60%. Chin-ups here are treated as a bicep exercise — light and controlled.",
+        note:"Chin-up on arm day is very Momoa. Treat it as a bicep movement. Don't go to full failure — leave 2 reps in the tank so you can run the full session.",
+        exercises:[
+          { name:"Chin-Up (underhand, shoulder-width)", phase:"BAR BONUS", sets:"AR-7", reps:"7→6→5", weight:"Bodyweight", cue:"Underhand grip. Treat as a bicep exercise. Squeeze the bicep at top. Don't go to failure — stop 1–2 reps short each set." },
+          { name:"DB Arnold Press", phase:null, sets:"AR-7", reps:"7→6→5", weight:"55–60% 1RM", cue:"Full rotation. Shoulder health. Don't ego lift on this one." },
+          { name:"DB Incline Curl", phase:null, sets:"AR-7", reps:"7→6→5", weight:"55% 1RM", cue:"Full stretch at bottom. Slow eccentric. Bicep peak." },
+          { name:"Tricep Dip (upright)", phase:null, sets:"AR-7", reps:"7→6→5", weight:"Bodyweight", cue:"Upright torso. Tricep focus. Elbows track back." },
+          { name:"DB Lateral Raise", phase:null, sets:"3×15", reps:"Light", weight:"~30% 1RM", cue:"Always finish with this. Capped shoulders." }
+        ]
+      }
+    ]
+  }
+};
+
+// STATE
+let state = { variant:'dumbbell', day:0, ar7Open:false, pullupOpen:false, stage:0 };
+
+function getColor() { return PROGRAMS[state.variant].color; }
+
+// RENDER VARIANT TABS
+function renderVariantTabs() {
+  const c = getColor();
+  document.getElementById('header').style.borderBottomColor = c;
+  const el = document.getElementById('variant-tabs');
+  el.innerHTML = Object.entries(PROGRAMS).map(([k,p]) => `
+    <button class="variant-tab ${state.variant===k?'active':''}" onclick="setVariant('${k}')"
+      style="${state.variant===k?'background:'+p.color+';':''}">
+      <span class="tab-icon">${p.icon}</span>${p.label}
+    </button>
+  `).join('');
+}
+
+// RENDER PHILOSOPHY
+function renderPhilosophy() {
+  const p = PROGRAMS[state.variant];
+  const c = p.color;
+  const el = document.getElementById('philosophy');
+  el.style.borderLeftColor = c;
+  el.querySelector('.label').style.color = c;
+  el.querySelector('.label').textContent = 'LOAD PHILOSOPHY — ' + p.label.toUpperCase();
+  el.querySelector('p').textContent = p.weightPhilosophy;
+}
+
+// RENDER AR7 PANEL
+function renderAR7() {
+  const c = getColor();
+  document.getElementById('ar7-title').style.color = c;
+  document.getElementById('r1').style.color = c;
+  document.getElementById('r2').style.color = c;
+  document.getElementById('r3').style.color = c;
+  document.getElementById('ar7-weight-label').style.color = c;
+  document.getElementById('ar7-rest-label').style.color = c;
+  const panel = document.getElementById('ar7-panel');
+  panel.classList.toggle('visible', state.ar7Open);
+  const btn = document.getElementById('ar7-toggle');
+  btn.classList.toggle('open', state.ar7Open);
+  btn.textContent = (state.ar7Open ? '▲' : '▼') + ' AR-7 System';
+}
+
+// RENDER PULLUP PANEL
+function renderPullupPanel() {
+  const panel = document.getElementById('pullup-panel');
+  panel.classList.toggle('visible', state.pullupOpen);
+  const btn = document.getElementById('pullup-toggle');
+  btn.classList.toggle('open', state.pullupOpen);
+  btn.style.borderColor = state.pullupOpen ? '#5C3A7E' : '';
+  btn.textContent = (state.pullupOpen ? '▲' : '▼') + ' Pull-Up Progression';
+
+  // Stage tabs
+  const tabs = document.getElementById('stage-tabs');
+  tabs.innerHTML = PULLUP_STAGES.map((s,i) => `
+    <button class="stage-tab ${state.stage===i?'active':''}" onclick="setStage(${i})"
+      style="${state.stage===i?'background:'+s.color+';border-color:'+s.color+';':''}">
+      ${s.label}<br><span style="font-size:8px;opacity:0.8">${s.range}</span>
+    </button>
+  `).join('');
+
+  // Stage detail
+  const s = PULLUP_STAGES[state.stage];
+  document.getElementById('stage-detail').innerHTML = `
+    <div class="stage-header">
+      <div class="stage-bar" style="background:${s.color}"></div>
+      <div>
+        <div class="stage-name" style="color:${s.color}">${s.label}: ${s.range}</div>
+        <div class="stage-desc">${s.description}</div>
+      </div>
+    </div>
+    ${s.protocol.map(p=>`
+      <div class="protocol-item">
+        <div class="protocol-name">${p.name}</div>
+        <div class="protocol-detail">${p.detail}</div>
+      </div>
+    `).join('')}
+    <div class="ar7-note">
+      <div class="note-label">AR-7 NOTE</div>
+      <p>${s.ar7note}</p>
+    </div>
+    <div class="transfer-note">
+      <div class="note-label">HOW OTHER DAYS BUILD THIS</div>
+      <p>${s.transfer}</p>
+    </div>
+  `;
+}
+
+// RENDER DAY SELECTOR
+function renderDaySelector() {
+  const c = getColor();
+  const prog = PROGRAMS[state.variant];
+  const el = document.getElementById('day-selector');
+  el.innerHTML = prog.days.map((d,i) => `
+    <button class="day-tab ${state.day===i?'active':''}" onclick="setDay(${i})"
+      style="${state.day===i?'background:'+c+';border-color:'+c+';':''}">
+      <span class="day-num">DAY ${d.day}</span>${d.focus}
+    </button>
+  `).join('') + `<div class="rest-tab">DAY 6–7<br>REST</div>`;
+}
+
+// RENDER DAY CARD
+function renderDayCard() {
+  const c = getColor();
+  const prog = PROGRAMS[state.variant];
+  const day = prog.days[state.day];
+
+  document.getElementById('day-header').style.background = c;
+  document.getElementById('day-label').textContent = 'DAY ' + day.day;
+  document.getElementById('day-focus').textContent = day.focus;
+  document.getElementById('day-muscles').textContent = day.muscles;
+
+  document.getElementById('day-load').style.borderLeft = '4px solid ' + c;
+  document.getElementById('load-label').style.color = c;
+  document.getElementById('load-text').textContent = day.weight;
+  document.getElementById('note-text').textContent = day.note;
+
+  const exEl = document.getElementById('exercises');
+  exEl.innerHTML = day.exercises.map((ex, i) => {
+    const phaseColor = ex.phase ? (PHASE_COLORS[ex.phase] || c) : null;
+    const isSpecial = ex.name.startsWith('⭐');
+    const borderColor = phaseColor || 'transparent';
+    const badgeStyle = phaseColor ?
+      `background:${phaseColor}22;border:1px solid ${phaseColor}44;color:${phaseColor};` : '';
+    return `
+      <div class="exercise-item ${isSpecial?'special':''}"
+        style="border-left:3px solid ${borderColor};${i<day.exercises.length-1?'':'border-bottom:none'}">
+        ${ex.phase ? `<div class="phase-badge" style="${badgeStyle}">${ex.phase}</div>` : ''}
+        <div class="exercise-row">
+          <div class="exercise-name" style="color:${isSpecial?'#c084fc':'#F0EDE8'}">${ex.name}</div>
+          <div class="exercise-sets">
+            <div class="sets-num" style="color:${phaseColor||c}">${ex.sets}</div>
+            <div class="reps-num">${ex.reps}</div>
+          </div>
+        </div>
+        <div class="exercise-weight">${ex.weight}</div>
+        <div class="exercise-cue">${ex.cue}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// RENDER WEEKLY GRID
+function renderWeeklyGrid() {
+  const c = getColor();
+  const days = ['M','T','W','TH','F','SA','SU'];
+  const focuses = ['PUSH','PULL','LEGS','CORE','ARMS','REST','REST'];
+  document.getElementById('week-grid').innerHTML = days.map((d,i) => {
+    const isRest = i >= 5;
+    return `
+      <div class="week-day ${isRest?'rest':''}">
+        <div class="wd" style="${!isRest?'color:'+c:''}">${d}</div>
+        <div class="wf">${focuses[i]}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// FULL RENDER
+function render() {
+  renderVariantTabs();
+  renderPhilosophy();
+  renderAR7();
+  renderPullupPanel();
+  renderDaySelector();
+  renderDayCard();
+  renderWeeklyGrid();
+}
+
+// STATE SETTERS
+function setVariant(v) { state.variant = v; state.day = 0; render(); }
+function setDay(i) { state.day = i; renderDaySelector(); renderDayCard(); window.scrollTo({top: document.getElementById('day-selector').offsetTop - 80, behavior:'smooth'}); }
+function setStage(i) { state.stage = i; renderPullupPanel(); }
+
+document.getElementById('ar7-toggle').addEventListener('click', () => {
+  state.ar7Open = !state.ar7Open; renderAR7();
+});
+document.getElementById('pullup-toggle').addEventListener('click', () => {
+  state.pullupOpen = !state.pullupOpen; renderPullupPanel();
+});
+
+render();
+</script>
+</body>
+</html>
